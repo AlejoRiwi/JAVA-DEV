@@ -17,4 +17,11 @@ public class EmpleadoTemporal extends Empleado{
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
+    @Override
+    public String toString() {
+        return "EmpleadoTemporal{" +
+                "tipo='" + tipo + '\'' +
+                '}';
+    }
 }

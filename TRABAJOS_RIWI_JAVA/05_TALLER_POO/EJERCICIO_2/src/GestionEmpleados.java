@@ -2,17 +2,23 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class GestionEmpleados {
+
+    //Variables
     ArrayList<Empleado> listaEmpleado;
     private String nombre;
     private String edad;
     private int idEmpleado = 0;
     private double salario;
-    
+
     private String tipoEmpleado;
+    String option;
+
+    // metodos constructores
 
     public GestionEmpleados() {
         listaEmpleado = new ArrayList<>();
     }
+    // Getters and setters
 
     public String getNombre() {
         return nombre;
@@ -55,9 +61,9 @@ public class GestionEmpleados {
         this.tipoEmpleado = tipoEmpleado;
     }
 
-    String option;
 
-    // METODOS
+
+    /* --------------------------------- METODOS ---------------------------- -*/
     public void crearEmpleado() {
         do {
             JOptionPane.showMessageDialog(null, """
@@ -76,8 +82,15 @@ public class GestionEmpleados {
                         """);
                 if (tipoEmpleado.equalsIgnoreCase("temporal")){
                     EmpleadoTemporal empleadoTemp = new EmpleadoTemporal(nombre,edad,idEmpleado,salario,tipoEmpleado);
+                    listaEmpleado.add(empleadoTemp);
 
+                    JOptionPane.showMessageDialog(null, "Empleado Temporal creado con Exito!");
+                }else {
+                    EmpleadoPermanente empleadoPer = new EmpleadoPermanente(nombre,edad,idEmpleado,salario,tipoEmpleado);
+                    listaEmpleado.add(empleadoPer);
+                    JOptionPane.showMessageDialog(null, "Empleado Permanente creado con Exito!");
                 }
+
             } else {
                 JOptionPane.showMessageDialog(null, "El programa cerro! ");
             }
