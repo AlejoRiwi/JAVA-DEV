@@ -100,4 +100,15 @@ public class GestionEmpleados {
         }while("si".equals(option));
 
     }
+
+    public boolean eliminarEmpleado (int idEmpleado) {
+        return listaEmpleado.removeIf(emp -> emp.getIdEmpleado() == idEmpleado);
+    }
+
+    public void mostrarEmpleados() {
+        for (Empleado emp : listaEmpleado ) {
+            System.out.println("ID Empleado: " + emp.getIdEmpleado() + " Nombre: " + emp.getNombre() + " " +
+                    "salario: " + emp.getSalario());
+        }
+    }
 }

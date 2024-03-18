@@ -1,27 +1,27 @@
 public class EmpleadoTemporal extends Empleado{
 
-    private String tipo;
+    private String fechaFinContrato;
 
     public EmpleadoTemporal() {
     }
 
-    public EmpleadoTemporal(String nombre, String edad, int idEmpleado, double salario, String tipo) {
+    public EmpleadoTemporal(String nombre, String edad, int idEmpleado, double salario, String fechaFinContrato) {
         super(nombre, edad, idEmpleado, salario);
-        this.tipo = tipo;
+        this.fechaFinContrato = fechaFinContrato;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getFechaFinContrato() {
+        return fechaFinContrato;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setFechaFinContrato(String fechaFinContrato) {
+        this.fechaFinContrato = fechaFinContrato;
     }
 
     @Override
     public String toString() {
         return "EmpleadoTemporal{" +
-                "tipo='" + tipo + '\'' +
+                "tipo='" + fechaFinContrato + '\'' +
                 '}';
     }
 }
