@@ -110,7 +110,31 @@ public class AutorModel implements CRUD {
 
     @Override
     public boolean update(Object autor) {
-        return false;
+        Connection objConnection  = ConfigDB.openConnection();
+        Autor objAutor = (Autor) autor;
+
+        boolean isUpdate = false;
+
+        try {
+
+            String sql = "UPDATE autores SET name =?, country = ? WHERE id = ?";
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+            objPrepare.setString(1,objAutor.getName());
+            objPrepare.setString(2,objAutor.getCountry());
+            objPrepare.setInt(3,objAutor.getId());
+
+            int rowAffected = objPrepare.executeUpdate();
+
+            if (rowAffected > 0) {
+                isUpdate = true;
+                JOptionPane.showMessageDialog(null, "Se actualizo Correctamente!");
+            }
+
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage() + " No se cual es el error de actualizacion");
+        }
+        ConfigDB.closeConnection();
+        return isUpdate;
     }
 
     @Override

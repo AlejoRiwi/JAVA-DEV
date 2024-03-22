@@ -45,12 +45,32 @@ public class AutorController {
     }
 
     public void findById(){
-        String listAutor= this.getAll(this.autorController.findAll());
-        JOptionPane.showMessageDialog(null, listAutor);
-
         int confirm = Integer.parseInt(JOptionPane.showInputDialog(null, "Ingresa el ID que quieres buscar"));
+        Autor objAutor = (Autor) this.autorController.findById(confirm);
+        if (objAutor == null){
+            JOptionPane.showMessageDialog(null, "Autor no encontrado");
+        } else {
+            JOptionPane.showMessageDialog(null, "Autor: " + objAutor);
+        }
 
-        String list = this.findById(this.autorController.findById(confirm));
+    }
 
+    public void update() {
+        String listAutor = this.getAll(this.autorController.findAll());
+        JOptionPane.showMessageDialog(null, listAutor);
+        int idUpdate = Integer.parseInt(JOptionPane.showInputDialog(null,"Ingresa el Id del usuario"));
+        Autor objAutor = (Autor)  this.autorController.findById(idUpdate);
+
+        if (objAutor == null) {
+            JOptionPane.showMessageDialog(null,"El usuario no existe");
+        } else {
+            String newName = JOptionPane.showInputDialog(null, "Ingresa el nombre actualizado",objAutor.getName());
+            String newCountry = JOptionPane.showInputDialog(null, "Ingresa el nombre actualizado",objAutor.getCountry());
+
+            objAutor.setName(newName);
+            objAutor.setCountry(newCountry);
+
+            this.autorController.update(objAutor);
+        }
     }
 }
