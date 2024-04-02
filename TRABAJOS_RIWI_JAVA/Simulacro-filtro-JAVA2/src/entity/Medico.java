@@ -57,4 +57,15 @@ public class Medico {
     public void setObjEspecialidad(Especialidad objEspecialidad) {
         this.objEspecialidad = objEspecialidad;
     }
+
+    @Override
+    public String toString() {
+        return "Medico{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", id_especialidad=" + id_especialidad +
+                ", objEspecialidad=" + objEspecialidad +
+                '}';
+    }
 }

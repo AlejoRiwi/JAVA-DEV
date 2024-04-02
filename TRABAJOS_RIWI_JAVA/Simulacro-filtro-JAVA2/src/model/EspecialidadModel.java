@@ -5,11 +5,13 @@ import database.ConfigDB;
 import entity.Especialidad;
 
 import javax.swing.*;
+import java.io.ObjectInputFilter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 public class EspecialidadModel implements CRUD {
@@ -43,19 +45,23 @@ public class EspecialidadModel implements CRUD {
     public List<Object> findAll() {
         Connection objConnection = ConfigDB.openConnection();
         List<Object> listEspecialidad = new ArrayList<>();
+
         try {
             String sql = "SELECT * FROM especialidad ORDER BY especialidad.id ASC;";
             PreparedStatement objPrepare = (PreparedStatement) objConnection.prepareStatement(sql);
+
             ResultSet objResult = objPrepare.executeQuery();
 
-            while (objResult.next()) {
+            while (objResult.next()){
                 Especialidad objEspecialidad = new Especialidad();
+
                 objEspecialidad.setId(objResult.getInt("id"));
                 objEspecialidad.setNombre(objResult.getString("nombre"));
                 objEspecialidad.setDescripcion(objResult.getString("descripcion"));
+
                 listEspecialidad.add(objEspecialidad);
             }
-        }catch (SQLException e) {
+        }catch (SQLException e){
             JOptionPane.showMessageDialog(null, "Data acquosoton ERROR");
         }
 
@@ -63,6 +69,29 @@ public class EspecialidadModel implements CRUD {
         return listEspecialidad;
     }
 
+    public Object findById(int id) {
+        Connection objConnection = ConfigDB.openConnection();
+        Especialidad objEspecialidad = null;
+        try {
+            String sql = "SELECT * FROM especialidad WHERE id = ?;";
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            objPrepare.setInt(1,id);
+
+            ResultSet objResult = objPrepare.executeQuery();
+
+            while (objResult.next()){
+                objEspecialidad = new Especialidad();
+                objEspecialidad.setId(objResult.getInt("id"));
+                objEspecialidad.setNombre(objResult.getString("nombre"));
+                objEspecialidad.setDescripcion(objResult.getString("descripcion"));
+            }
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        ConfigDB.closeConnection();
+        return objEspecialidad;
+    }
     @Override
     public boolean update(Object object) {
         return false;
@@ -70,6 +99,27 @@ public class EspecialidadModel implements CRUD {
 
     @Override
     public boolean delete(Object object) {
-        return false;
+       Especialidad objEspecialidad = (Especialidad) object;
+       boolean isDeleted = false;
+
+       Connection objConnecion = ConfigDB.openConnection();
+
+       try {
+           String sql = "DELETE FROM especialidad WHERE id = ?;";
+
+           PreparedStatement objPrepare = objConnecion.prepareStatement(sql,PreparedStatement.RETURN_GENERATED_KEYS);
+           objPrepare.setInt(1,objEspecialidad.getId());
+
+           int filasAfectadas = objPrepare.executeUpdate();
+
+           if (filasAfectadas > 0) {
+               isDeleted = true;
+               JOptionPane.showMessageDialog(null, "Se elimino coprrectamente ");
+           }
+       }catch (Exception e) {
+           JOptionPane.showMessageDialog(null, e.getMessage());
+       }
+       ConfigDB.closeConnection();
+       return isDeleted;
     }
 }
