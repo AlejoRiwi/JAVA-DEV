@@ -61,11 +61,10 @@ public class Medico {
     @Override
     public String toString() {
         return "Medico{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", id_especialidad=" + id_especialidad +
-                ", objEspecialidad=" + objEspecialidad +
+                "id = " + id +
+                ", nombre = '" + nombre + '\'' +
+                ", apellido = '" + apellido + '\'' +
+                ", especialidad = " + objEspecialidad.getNombre() +
                 '}';
     }
 }

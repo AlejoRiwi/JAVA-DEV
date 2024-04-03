@@ -58,7 +58,7 @@ public class EspecialidadModel implements CRUD {
                 objEspecialidad.setId(objResult.getInt("id"));
                 objEspecialidad.setNombre(objResult.getString("nombre"));
                 objEspecialidad.setDescripcion(objResult.getString("descripcion"));
-
+                System.out.println(objResult.getInt("id"));
                 listEspecialidad.add(objEspecialidad);
             }
         }catch (SQLException e){

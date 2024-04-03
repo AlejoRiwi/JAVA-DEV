@@ -2,12 +2,14 @@ package model;
 
 import database.CRUD;
 import database.ConfigDB;
+import entity.Especialidad;
 import entity.Medico;
 
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MedicoModel implements CRUD {
@@ -15,7 +17,8 @@ public class MedicoModel implements CRUD {
     @Override
     public Object insert(Object object) {
         Connection objConnection = ConfigDB.openConnection();
-        Medico objMedico = new Medico();
+        Medico objMedico =(Medico) object;
+        Especialidad objEspecialidad = new Especialidad();
 
         try{
             String sql = "INSERT INTO medico(nombre,apellido, id_especialidad) VALUES(?,?,?);";
@@ -37,7 +40,7 @@ public class MedicoModel implements CRUD {
             objPrepare.close();
             JOptionPane.showMessageDialog(null, "Medico Creado correctamente");
         }catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error adding coder " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error adding Medico " + e.getMessage() + "No se puede añadir el medico");
         }
         ConfigDB.closeConnection();
         return objMedico;
@@ -45,7 +48,62 @@ public class MedicoModel implements CRUD {
 
     @Override
     public List<Object> findAll() {
-        return null;
+        Connection objConnection = ConfigDB.openConnection();
+        List<Object> listMedico = new ArrayList<>();
+
+        try{
+            String sql = "SELECT * FROM medico INNER JOIN especialidad ON especialidad.id = medico.id_especialidad ORDER BY medico.id ASC;";
+            PreparedStatement objPrepareStatement = (PreparedStatement) objConnection.prepareStatement(sql);
+            ResultSet objResult = objPrepareStatement.executeQuery();
+
+            while (objResult.next()){
+                Medico objMedico = new Medico();
+                Especialidad objEspecialidad = new Especialidad();
+
+                objMedico.setId(objResult.getInt("id"));
+                objMedico.setNombre(objResult.getNString("nombre"));
+                objMedico.setApellido(objResult.getNString("apellido"));
+
+                objEspecialidad.setNombre(objResult.getString("especialidad.nombre"));
+
+                objMedico.setObjEspecialidad(objEspecialidad);
+                listMedico.add(objMedico);
+
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        ConfigDB.closeConnection();
+        return listMedico;
+    }
+
+    public List<Object> findName (String nombre) {
+        List<Object> listMedicos = new ArrayList<>();
+        Connection objConnection = ConfigDB.openConnection();
+        Medico objMedico = null;
+
+        try{
+            String sql = "SELECT medico.* FROM medico JOIN especialidad ON medico.id_especialidad = especialidad.id WHERE especialidad.nombre = ?;";
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            objPrepare.setString(1,"%"+nombre+ "%");
+
+            ResultSet objResult = objPrepare.executeQuery();
+
+            while(objResult.next()) {
+                objMedico = new Medico();
+                objMedico.setId(objResult.getInt("id"));
+                objMedico.setNombre(objResult.getString("nombre"));
+                objMedico.setApellido(objResult.getString("apellido"));
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        ConfigDB.closeConnection();
+        return listMedicos;
+
+
     }
 
     @Override
@@ -55,6 +113,15 @@ public class MedicoModel implements CRUD {
 
     @Override
     public boolean delete(Object object) {
+        Medico objMedico = (Medico) object;
+        boolean isDeleted = false;
+
+        Connection objconnection = ConfigDB.openConnection();
+
+        try{
+        String sql = "DELETE FROM medico WHERE id = ?;";
+
+        }
         return false;
     }
 }
