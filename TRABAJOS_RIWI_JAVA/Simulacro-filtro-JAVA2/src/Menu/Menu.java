@@ -72,7 +72,7 @@ public class Menu {
                                   objMedicoController.findName();
                                 break;
                             case 4:
-                                // objMedicoController.delete();
+                                objMedicoController.delete();
                                 break;
                         }
                     }while(option != 5);

@@ -73,4 +73,22 @@ public class MedicoController {
             }
         }
     }*/
+
+    public void delete() {
+        String listMedicos = this.getAll(this.objMedicoModel.findAll());
+        int confirmacion = 1;
+        int isDeleted = Integer.parseInt(JOptionPane.showInputDialog(listMedicos + "Ingresa el identificador del " +
+                "medico que quieres eliminar"));
+        Medico objMedico = (Medico) this.objMedicoModel.findById(isDeleted);
+
+        if (objMedico == null){
+            JOptionPane.showMessageDialog(null, "Medico no encontrado");
+        } else {
+            confirmacion = JOptionPane.showConfirmDialog(null,
+                    "Esta seguro de que queire eliminar al medico " + objMedico.getNombre());
+            if (confirmacion == 0) {
+                this.objMedicoModel.delete(objMedico);
+            }
+        }
+    }
 }

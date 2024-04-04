@@ -6,6 +6,7 @@ import entity.Especialidad;
 import entity.Medico;
 
 import javax.swing.*;
+import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -111,6 +112,33 @@ public class MedicoModel implements CRUD {
         return false;
     }
 
+    public Object findById (int id) {
+        Connection objConnection = ConfigDB.openConnection();
+        Medico objMedico = null;
+
+        try{
+            String sql = "SELECT * FROM medico WHERE id = ? ;";
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+            objPrepare.setInt(1, id);
+
+            ResultSet objResult = objPrepare.executeQuery();
+
+            while (objResult.next()) {
+                objMedico = new Medico();
+                objMedico.setId(objResult.getInt("id"));
+                objMedico.setNombre(objResult.getString("nombre"));
+                objMedico.setApellido(objResult.getString("apellido"));
+
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+
+        ConfigDB.closeConnection();
+
+        return objMedico;
+    }
+
     @Override
     public boolean delete(Object object) {
         Medico objMedico = (Medico) object;
@@ -119,9 +147,20 @@ public class MedicoModel implements CRUD {
         Connection objconnection = ConfigDB.openConnection();
 
         try{
-        String sql = "DELETE FROM medico WHERE id = ?;";
+            String sql = "DELETE FROM medico WHERE id = ?;";
+            PreparedStatement objPrepare = objconnection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            objPrepare.setInt(1, objMedico.getId());
 
+            int filasAfectadas = objPrepare.executeUpdate();
+
+            if (filasAfectadas > 0) {
+                isDeleted = true;
+                JOptionPane.showMessageDialog(null, "El medico " + objMedico.getNombre() + " se elimino Correctamente");
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e.getMessage());
         }
-        return false;
+        ConfigDB.closeConnection();
+        return isDeleted;
     }
 }

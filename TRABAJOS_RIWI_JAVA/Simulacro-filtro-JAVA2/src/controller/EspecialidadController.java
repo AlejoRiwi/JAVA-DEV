@@ -14,7 +14,7 @@ public class EspecialidadController {
         this.objEspecialidadModel = new EspecialidadModel();
     }
 
-    public void insert () {
+    /*public void insert () {
         Especialidad objEspecialidad = new Especialidad();
         String nombre = JOptionPane.showInputDialog(null, "Ingresa el nombre de la Especialización");
         String descripcion = JOptionPane.showInputDialog(null, "Ingresa la descripcion de la Especialización");
@@ -26,14 +26,26 @@ public class EspecialidadController {
 
         JOptionPane.showMessageDialog(null, objEspecialidad.toString());
 
+    }*/
+
+    // Refactorin
+    public static void insert() {
+        String nombre = JOptionPane.showInputDialog(null, "Ingresa el nombre de la Especialización");
+        String descripcion = JOptionPane.showInputDialog(null, "Ingresa la descripcion de la Especialización");
+
+        instanciaModel().insert(new Especialidad(nombre, descripcion));
+    }
+    public static EspecialidadModel instanciaModel() {
+        return new EspecialidadModel();
     }
 
-    public void getAll () {
-        String list = this.getAll(this.objEspecialidadModel.findAll());
+
+    public static void getAll () {
+        String list = getAll(instanciaModel().findAll());
         JOptionPane.showMessageDialog(null, list);
     }
 
-    public String getAll (List<Object> listObject) {
+    public static String getAll (List<Object> listObject) {
         String list = "-- Lista de Especialidades --\n \n";
         for(Object obj : listObject) {
             Especialidad objEspecialidad = (Especialidad) obj;
