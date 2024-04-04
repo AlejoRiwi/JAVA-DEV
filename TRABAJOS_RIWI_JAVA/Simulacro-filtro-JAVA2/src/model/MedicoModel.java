@@ -6,10 +6,10 @@ import entity.Especialidad;
 import entity.Medico;
 
 import javax.swing.*;
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,10 +62,13 @@ public class MedicoModel implements CRUD {
                 Especialidad objEspecialidad = new Especialidad();
 
                 objMedico.setId(objResult.getInt("id"));
-                objMedico.setNombre(objResult.getNString("nombre"));
-                objMedico.setApellido(objResult.getNString("apellido"));
+                objMedico.setNombre(objResult.getString("nombre"));
+                objMedico.setApellido(objResult.getString("apellido"));
+                objMedico.setId_especialidad(objResult.getInt("id_especialidad"));
 
+                objEspecialidad.setId(objResult.getInt("especialidad.id"));
                 objEspecialidad.setNombre(objResult.getString("especialidad.nombre"));
+                objEspecialidad.setDescripcion(objResult.getString("especialidad.descripcion"));
 
                 objMedico.setObjEspecialidad(objEspecialidad);
                 listMedico.add(objMedico);
@@ -78,16 +81,16 @@ public class MedicoModel implements CRUD {
         return listMedico;
     }
 
-    public List<Object> findName (String nombre) {
+    public static List<Object> findEspecialidad() {
         List<Object> listMedicos = new ArrayList<>();
         Connection objConnection = ConfigDB.openConnection();
         Medico objMedico = null;
 
         try{
-            String sql = "SELECT medico.* FROM medico JOIN especialidad ON medico.id_especialidad = especialidad.id WHERE especialidad.nombre = ?;";
+            String sql = "SELECT * FROM medico WHERE medico.id_especialidad = ?;";
             PreparedStatement objPrepare = objConnection.prepareStatement(sql);
 
-            objPrepare.setString(1,"%"+nombre+ "%");
+            objPrepare.setString(1,"id");
 
             ResultSet objResult = objPrepare.executeQuery();
 
@@ -96,6 +99,9 @@ public class MedicoModel implements CRUD {
                 objMedico.setId(objResult.getInt("id"));
                 objMedico.setNombre(objResult.getString("nombre"));
                 objMedico.setApellido(objResult.getString("apellido"));
+                objMedico.setId_especialidad(objResult.getInt("id_especialidad"));
+
+                listMedicos.add(objMedico);
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -103,13 +109,34 @@ public class MedicoModel implements CRUD {
 
         ConfigDB.closeConnection();
         return listMedicos;
-
-
     }
 
     @Override
     public boolean update(Object object) {
-        return false;
+        Connection objConnection = ConfigDB.openConnection();
+        Medico objMedico = (Medico) object;
+        boolean isUpdate = false;
+        try{
+            String sql = "UPDATE medico SET id_especialidad=?;";
+            PreparedStatement objPrepare = objConnection.prepareStatement(sql);
+
+            // objPrepare.setString(1, objMedico.getNombre());
+            // objPrepare.setString(2, objMedico.getApellido());
+            objPrepare.setInt(1, objMedico.getId_especialidad());
+
+            int filasAfectadas = objPrepare.executeUpdate();
+
+
+            if (filasAfectadas > 0) {
+                isUpdate = true;
+                JOptionPane.showMessageDialog(null, "El medico, " + objMedico.getNombre() + " Fue actualizado correctamente");
+
+            }
+        }catch (SQLException e){
+            JOptionPane.showMessageDialog(null, "Error > " + e.getMessage());
+        }
+        ConfigDB.closeConnection();
+        return isUpdate;
     }
 
     public Object findById (int id) {

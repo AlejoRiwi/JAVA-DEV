@@ -2,6 +2,7 @@ package controller;
 
 import entity.Especialidad;
 import model.EspecialidadModel;
+import utils.Utils;
 
 import javax.swing.*;
 import java.util.List;
@@ -56,7 +57,7 @@ public class EspecialidadController {
         return list;
     }
 
-    public void delete () {
+    /* public void delete () {
         String listEspecialidades = this.getAll(this.objEspecialidadModel.findAll());
         int confirmacion = 1;
         int isDeleted = Integer.parseInt(JOptionPane.showInputDialog(listEspecialidades + "\nIngresa el identificador de la Especialidad a eliminar"));
@@ -72,6 +73,13 @@ public class EspecialidadController {
                 this.objEspecialidadModel.delete(objEspecialidad);
             }
         }
+    }*/
 
+    // Refactorizacion de Eliminar
+
+    public static  void delete (){
+        Object[] opciones = Utils.listToArray(instanciaModel().findAll());
+        Especialidad objSeleccion = (Especialidad) JOptionPane.showInputDialog(null, "Selecciona una especialidad", "", JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+        instanciaModel().delete(objSeleccion);
     }
 }

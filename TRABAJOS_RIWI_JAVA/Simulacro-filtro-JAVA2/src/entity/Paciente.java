@@ -6,14 +6,13 @@ public class Paciente {
     private int id;
     private String nombre;
     private String apellido;
-    private Date fecha_nacimiento;
+    private String fecha_nacimiento;
     private String documento_identidad;
 
     public Paciente() {
     }
 
-    public Paciente(int id, String nombre, String apellido, Date fecha_nacimiento, String documento_identidad) {
-        this.id = id;
+    public Paciente(String nombre, String apellido, String fecha_nacimiento, String documento_identidad) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.fecha_nacimiento = fecha_nacimiento;
@@ -44,11 +43,11 @@ public class Paciente {
         this.apellido = apellido;
     }
 
-    public Date getFecha_nacimiento() {
+    public String getFecha_nacimiento() {
         return fecha_nacimiento;
     }
 
-    public void setFecha_nacimiento(Date fecha_nacimiento) {
+    public void setFecha_nacimiento(String fecha_nacimiento) {
         this.fecha_nacimiento = fecha_nacimiento;
     }
 

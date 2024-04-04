@@ -10,8 +10,7 @@ public class Medico {
     public Medico() {
     }
 
-    public Medico(int id, String nombre, String apellido, int id_especialidad, Especialidad objEspecialidad) {
-        this.id = id;
+    public Medico(String nombre, String apellido, int id_especialidad, Especialidad objEspecialidad) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.id_especialidad = id_especialidad;
@@ -60,11 +59,9 @@ public class Medico {
 
     @Override
     public String toString() {
-        return "Medico{" +
-                "id = " + id +
+        return "Medico" +
                 ", nombre = '" + nombre + '\'' +
                 ", apellido = '" + apellido + '\'' +
-                ", especialidad = " + objEspecialidad.getNombre() +
-                '}';
+                ", especialidad = " + objEspecialidad.getNombre();
     }
 }

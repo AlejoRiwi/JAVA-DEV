@@ -2,6 +2,7 @@ package Menu;
 
 import controller.EspecialidadController;
 import controller.MedicoController;
+import controller.PacienteController;
 
 import javax.swing.*;
 
@@ -9,7 +10,7 @@ public class Menu {
     EspecialidadController objEspeController = new EspecialidadController();
     MedicoController objMedicoController = new MedicoController();
     public  void mostrarMenu() {
-        String[] opciones = {"Nueva especialidad", "Nuevo Medico", "Salir"};
+        String[] opciones = {"Nueva Especialidad", "Nuevo Medico", "Nuevo Paciente","Salir"};
         int seleccion;
         do {
             seleccion = JOptionPane.showOptionDialog(
@@ -63,21 +64,42 @@ public class Menu {
 
                         switch (option){
                             case 0:
-                                objMedicoController.create();
+                                MedicoController.create();
                                 break;
                             case 1 :
-                                objMedicoController.findAll();
+                                MedicoController.findAll();
                                 break;
                             case 2:
-                                  objMedicoController.findName();
+                                  // MedicoController.findEspecialidad();
+                                break;
+                            case 3:
+                                MedicoController.update();
                                 break;
                             case 4:
-                                objMedicoController.delete();
+                                MedicoController.delete();
                                 break;
                         }
                     }while(option != 5);
                     break;
                 case 2:
+                    do {
+                        option = Integer.parseInt(JOptionPane.showInputDialog("""
+                            0. para crear un paciente
+                            1. para mostrar todos los pacientes
+                            2. para buscar paciente x cedula
+                            3. para actualizar los datos del paciente
+                            4. para eliminar un paciente
+                            5. para volver al menu principal
+                            """));
+
+                        switch (option){
+                            case 0:
+                                PacienteController.insert();
+                                break;
+                        }
+                    }while(option != 5);
+                    break;
+                case 3:
                     // Salir
                     JOptionPane.showMessageDialog(null, "Adiós");
                     System.exit(0);
@@ -86,7 +108,7 @@ public class Menu {
                     JOptionPane.showMessageDialog(null, "Opción inválida");
                     break;
             }
-        }while(seleccion != 3);
+        }while(seleccion != 4);
 
     }
 }

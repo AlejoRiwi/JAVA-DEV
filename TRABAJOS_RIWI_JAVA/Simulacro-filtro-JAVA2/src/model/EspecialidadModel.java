@@ -41,7 +41,7 @@ public class EspecialidadModel implements CRUD {
         return objEspecialidad;
     }
 
-    @Override
+
     public List<Object> findAll() {
         Connection objConnection = ConfigDB.openConnection();
         List<Object> listEspecialidad = new ArrayList<>();
