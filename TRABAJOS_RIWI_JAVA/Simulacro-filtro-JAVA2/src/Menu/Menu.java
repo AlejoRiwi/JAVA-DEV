@@ -96,6 +96,15 @@ public class Menu {
                             case 0:
                                 PacienteController.insert();
                                 break;
+                            case 1:
+                                PacienteController.getAll();
+                                break;
+                            case 3:
+                                PacienteController.update();
+                                break;
+                            case 4:
+                                PacienteController.delete();
+                                break;
                         }
                     }while(option != 5);
                     break;

@@ -58,4 +58,14 @@ public class Paciente {
     public void setDocumento_identidad(String documento_identidad) {
         this.documento_identidad = documento_identidad;
     }
+
+    @Override
+    public String toString() {
+        return "Paciente" +
+                " nombre = '" + nombre + '\'' +
+                ", apellido = '" + apellido + '\'' +
+                ", fecha_nacimiento = '" + fecha_nacimiento + '\'' +
+                ", documento_identidad = '" + documento_identidad + '\'' +
+                '}';
+    }
 }
